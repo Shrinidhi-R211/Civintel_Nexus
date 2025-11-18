@@ -1,0 +1,339 @@
+/* AirPage.module.css */
+
+/* ------------------------------
+   Base & Layout with light textured bg and radial center-left/right highlights
+--------------------------------*/
+.airPage {
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #ffffff; /* solid white base */
+  background-image:
+    /* large vertical radial gradients aligned left and right */
+    radial-gradient(ellipse 20vw 100vh at left center, rgba(95, 189, 244, 0.5), transparent 70%),
+    radial-gradient(ellipse 20vw 100vh at right center, rgba(87, 189, 248, 0.5), transparent 70%),
+    /* subtle textured pattern underneath */
+    url('https://www.transparenttextures.com/patterns/cubes.png');
+  background-repeat: repeat, no-repeat, repeat;
+  background-position: left center, right center, top left;
+  background-size: 98vw 100vh, 98vw 100vh, auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  color: #374151;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ------------------------------
+   Hero Section with image & overlay
+--------------------------------*/
+.hero {
+  position: relative;
+  padding: 6rem 1rem 6rem;
+  text-align: center;
+  background:
+    linear-gradient(rgba(20,20,40,0.8), rgba(20,20,40,0.8)),
+    url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') center center / cover no-repeat;
+  border-radius: 1.2rem;
+  box-shadow: 0 20px 45px rgb(0 0 0 / 0.1);
+  color: white;
+  user-select: none;
+  z-index: 1;
+}
+.heroOverlay {
+  position: absolute; inset:0;
+}
+.heroContent h1 {
+  font-size: clamp(2.8rem, 6vw, 4rem);
+  font-weight: 700;
+  text-shadow: 0 0 18px #7397decc;
+  margin-bottom: 0.8rem;
+  user-select: text;
+}
+.heroContent p {
+  margin: 0 auto;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 400;
+  max-width: 680px;
+  text-shadow: 0 0 10px #8fa6e0bb;
+  user-select: text;
+}
+
+/* ------------------------------
+   Swiper Carousel
+--------------------------------*/
+.carousel {
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  user-select: none;
+}
+
+/* Cards with subtle pastel gradient backgrounds */
+.card {
+  border-radius: 1.5rem;
+  padding: 2rem 1.8rem 3rem;
+  box-shadow: 0 20px 48px rgb(0 0 0 / 0.1);
+  transition: box-shadow 0.35s ease, transform 0.3s ease;
+  cursor: grab;
+  color: #1e293b;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.card:hover {
+  box-shadow: 0 30px 65px rgb(0 0 0 / 0.15);
+  transform: translateY(-12px) scale(1.06);
+}
+.card h3 {
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+}
+.card p {
+  font-size: 1.12rem;
+  line-height: 1.52;
+  flex-grow: 1;
+  user-select: text;
+}
+
+/* Gradient backgrounds for carousel cards by index */
+.swiper-slide:nth-child(1) .card {
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+}
+.swiper-slide:nth-child(2) .card {
+  background: linear-gradient(135deg, #fefcea, #f1da36);
+}
+.swiper-slide:nth-child(3) .card {
+  background: linear-gradient(135deg, #f9d29d, #f89185);
+}
+.swiper-slide:nth-child(4) .card {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+.swiper-slide:nth-child(5) .card {
+  background: linear-gradient(135deg, #43cea2, #185a9d);
+}
+
+/* ------------------------------
+   Map Modal
+--------------------------------*/
+.mapModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(255 255 255 / 0.95);
+  backdrop-filter: saturate(180%) blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+.mapContainer {
+  background: #fff;
+  width: 90%;
+  max-width: 720px;
+  height: 85%;
+  border-radius: 1.4rem;
+  box-shadow: 0 18px 45px rgb(0 0 0 / 0.22);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1.3rem 1.8rem 1.8rem;
+  position: relative;
+}
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: #ef4444;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-radius: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 14px rgba(239,68,68,0.7);
+  user-select: none;
+}
+.closeBtn:hover {
+  background-color: #dc2626;
+  transform: scale(1.07);
+}
+.mapBtn {
+  background: linear-gradient(135deg, #25c7eb, #e368e6); /* Blue gradient */
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 9999px; /* pill shape */
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s ease-in-out;
+  letter-spacing: 0.5px;
+}
+
+.mapBtn:hover {
+  transform: translateY(1px) scale(0.75);
+  background: linear-gradient(135deg, #1e40af, #104fd6); /* darker blue gradient */
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+}
+
+.mapBtn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
+}
+
+.mapBtn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5); /* focus ring */
+}
+
+
+/* Map search */
+.mapSearchBox {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.mapSearchBox input {
+  flex-grow: 1;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 1rem;
+  border: 1.8px solid #94a3b8;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: text;
+}
+.mapSearchBox input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 9px rgba(37,99,235,0.65);
+}
+.mapSearchBox button {
+  padding: 0.7rem 1.6rem;
+  border-radius: 1rem;
+  border: none;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+.mapSearchBox button:hover,
+.mapSearchBox button:focus {
+  background-color: #1e40af;
+  box-shadow: 0 0 12px #1e40afcc;
+  outline: none;
+}
+
+/* ------------------------------
+   Advantages & Disadvantages
+--------------------------------*/
+.advDisadvSection {
+  display: flex;
+  gap: 3.5rem;
+  max-width: 900px;
+  margin: 0 auto 4rem auto;
+  user-select: text;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.advantages,
+.disadvantages {
+  background: #f9fafb;
+  padding: 2.5rem 3rem;
+  border-radius: 1.4rem;
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.08);
+  flex: 1 1 355px;
+  min-width: 320px;
+  color: #374151;
+}
+
+.advantages h2,
+.disadvantages h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.8rem;
+  text-align: center;
+  user-select: text;
+}
+
+.advantages ul,
+.disadvantages ul {
+  padding-left: 1.8rem;
+  list-style: disc;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.advantages li,
+.disadvantages li {
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.7;
+  user-select: text;
+  color: #525f7f;
+}
+
+/* ------------------------------
+   Conclusion
+--------------------------------*/
+.conclusion {
+  max-width: 860px;
+  margin: 0 auto 3rem auto;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #667085;
+  padding: 2rem 2.5rem;
+  border-top: 2px solid #e4e7ef;
+  font-style: italic;
+  user-select: text;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .advDisadvSection {
+    flex-direction: column;
+    max-width: 90vw;
+  }
+  .advantages,
+  .disadvantages {
+    margin-bottom: 2.5rem;
+  }
+  .carousel {
+    padding-bottom: 4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .heroContent h1 {
+    font-size: 2.1rem;
+  }
+  .card h3 {
+    font-size: 1.3rem;
+  }
+  .card {
+    padding: 1.5rem 1.3rem;
+  }
+  .carousel {
+    padding-bottom: 5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 4rem 1rem 4rem;
+  }
+  .heroContent h1 {
+    font-size: 1.9rem;
+  }
+  .heroContent p {
+    font-size: 1rem;
+  }
+}
