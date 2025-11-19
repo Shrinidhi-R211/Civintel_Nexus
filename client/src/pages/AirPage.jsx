@@ -92,9 +92,9 @@ const AirPage = () => {
   useEffect(() => {
     const fetchTrend = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/air-data/trend", {
-          params: { lat: coords.lat, lon: coords.lon },
-        });
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/air-data/trend`, {
+        params: { lat: coords.lat, lon: coords.lon },
+      });
 
         if (res.data && res.data.length > 0) {
           const dailyData = {};
@@ -177,24 +177,36 @@ const AirPage = () => {
     }
   };
 
-  const handleSearch = async () => {
-    if (!searchText.trim()) return;
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchText)}`
-      );
-      const data = await res.json();
-      if (data && data.length > 0) {
-        const { lat, lon, display_name } = data[0];
-        setCoords({ lat: parseFloat(lat), lon: parseFloat(lon) });
-        setAddress(display_name);
-        await fetchLiveAQI(parseFloat(lat), parseFloat(lon));
-        sendDataToBackend(parseFloat(lat), parseFloat(lon));
+const handleSearch = async () => {
+  if (!searchText.trim()) return;
+
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchText)}`
+    );
+
+    const data = await res.json();
+
+    if (data && data.length > 0) {
+      const { lat, lon, display_name } = data[0];
+      const newLat = parseFloat(lat);
+      const newLon = parseFloat(lon);
+
+      setCoords({ lat: newLat, lon: newLon });
+      setAddress(display_name);
+
+      await fetchLiveAQI(newLat, newLon);
+
+      // 🌟 IMPORTANT: Zoom and move map smoothly
+      if (window.__leafletMap) {
+        window.__leafletMap.flyTo([newLat, newLon], 15);
       }
-    } catch (err) {
-      console.error("Search error:", err);
     }
-  };
+  } catch (err) {
+    console.error("Search error:", err);
+  }
+};
+
 
   const handleMapClick = (latlng) => {
     setCoords({ lat: latlng.lat, lon: latlng.lng });
@@ -343,33 +355,55 @@ const AirPage = () => {
 
       {/* Map Modal */}
       {isMapOpen && (
-        <div className={styles.mapModal}>
-          <div className={styles.mapContainer}>
-            <button className={styles.closeBtn} onClick={() => setIsMapOpen(false)}>✖</button>
+  <div className={styles.mapModal}>
+    <div className={styles.mapContainer}>
 
-            <div className={styles.mapSearchBox}>
-              <input
-                type="text"
-                placeholder="Search address..."
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-              />
-              <button onClick={handleSearch}>Go</button>
-            </div>
+      {/* --- Close Button --- */}
+      <button className={styles.closeBtn} onClick={() => setIsMapOpen(false)}>
+        ✖
+      </button>
 
-            <MapContainer
-              center={[coords.lat, coords.lon]}
-              zoom={12}
-              scrollWheelZoom={true}
-              style={{ height: "90%", width: "100%", borderRadius: "12px" }}
-            >
-              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              <Marker position={[coords.lat, coords.lon]} icon={markerIcon} />
-              <MapClickHandler onMapClick={handleMapClick} />
-            </MapContainer>
-          </div>
-        </div>
-      )}
+      {/* --- Search Bar --- */}
+      <div className={styles.mapSearchBox}>
+        <input
+          type="text"
+          placeholder="Search address..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+        <button onClick={handleSearch}>Go</button>
+      </div>
+
+      {/* --- Map --- */}
+      <MapContainer
+        key={`${coords.lat}-${coords.lon}`}
+        center={[coords.lat, coords.lon]}
+        zoom={14}
+        scrollWheelZoom={true}
+        style={{
+          height: "90%",
+          width: "100%",
+          borderRadius: "12px",
+          zIndex: 1,
+        }}
+        whenCreated={(map) => (window.__leafletMap = map)}
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+        <Marker position={[coords.lat, coords.lon]} icon={markerIcon} />
+
+        <MapClickHandler onMapClick={(latlng) => {
+          setCoords({ lat: latlng.lat, lon: latlng.lng });
+          fetchAddress(latlng.lat, latlng.lng);
+
+          // Smooth zoom to clicked location
+          window.__leafletMap.flyTo([latlng.lat, latlng.lng], 15);
+        }} />
+      </MapContainer>
+    </div>
+  </div>
+)}
+
 
       {/* Conclusion */}
       <section className={styles.conclusion}>

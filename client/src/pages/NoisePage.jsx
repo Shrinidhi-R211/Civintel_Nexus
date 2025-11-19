@@ -1,12 +1,9 @@
-// NoisePage.jsx (Tailwind version)
-// Replace your existing NoisePage.jsx with this file.
-// Requirements: TailwindCSS configured, react-leaflet & leaflet installed.
-
 import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-
+import axios from "axios";
+import { indiaStateLanguageMap, countryLanguageMap } from "../utils/languageMaps";
 // Fix Leaflet default icon (same as your previous fix)
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({

@@ -1,10 +1,15 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { default: User } = require('./models/user.model.js');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.use(cors());
+
+// Middleware
+app.use(cors());
+app.use(express.json());
 
 // MongoDB model for Air Data
 const airDataSchema = new mongoose.Schema({
@@ -19,22 +24,15 @@ const airDataSchema = new mongoose.Schema({
 });
 const AirData = mongoose.model("AirData", airDataSchema);
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/smartenvmonitor', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('Hey, It is successfully connected to MongoDB!'))
+// Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log('Hey, It is successfully connected to MongoDB Atlas!'))
 .catch((err) => console.error('MongoDB connection error:', err));
-
-// Middleware
-app.use(express.json());
 
 // Test route
 app.get('/', (req, res) => {
   res.send('Hello from the Civintel Nexus server!');
 });
-
 // POST route to save live AQI or searched location data
 app.post("/api/air-data", async (req, res) => {
   try {
@@ -92,7 +90,7 @@ app.post('/User', async (req, res) => {
   }
 });
 
-// Login and Logout Router
+// Login Router
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -119,6 +117,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
+//Logout Router
 app.get('/logout', (req, res) => {
   res.json({ message: 'Logged out' });
 });
