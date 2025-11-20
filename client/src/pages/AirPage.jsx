@@ -53,7 +53,7 @@ function MapClickHandler({ onMapClick }) {
 const AirPage = () => {
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [coords, setCoords] = useState({ lat: 12.9716, lon: 77.5946 });
-  const [address, setAddress] = useState("Fetching...");
+  const [address, setAddress] = useState("");
   const [aqi, setAqi] = useState(0);
   const [aqiCategory, setAqiCategory] = useState("");
   const [pm25, setPm25] = useState(0);
@@ -81,13 +81,18 @@ const AirPage = () => {
           setCoords({ lat: latitude, lon: longitude });
           await fetchLiveAQI(latitude, longitude);
           fetchAddress(latitude, longitude);
-          sendDataToBackend(latitude, longitude);
         },
         (err) => console.warn("Geolocation error:", err),
         { enableHighAccuracy: true }
       );
     }
   }, []);
+
+  useEffect(() => {
+  if (!address || !aqi || pm25 === 0 || pm10 === 0) return;
+
+  sendDataToBackend(coords.lat, coords.lon);
+}, [address, aqi, pm25, pm10]);
 
   useEffect(() => {
     const fetchTrend = async () => {
@@ -163,7 +168,7 @@ const AirPage = () => {
 
   const sendDataToBackend = async (lat, lon) => {
     try {
-      await axios.post("http://localhost:5000/api/air-data", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/air-data`, {
         lat,
         lon,
         address,
@@ -258,7 +263,7 @@ const handleSearch = async () => {
         </>
       ),
     },
-    {
+   /*  {
       content: (
         <>
           <h2>Air Quality Trends</h2>
@@ -278,7 +283,7 @@ const handleSearch = async () => {
           </p>
         </>
       ),
-    },
+    }, */
   ];
 
   const advantages = [
