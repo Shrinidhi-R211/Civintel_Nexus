@@ -2,7 +2,6 @@ import React from 'react';
 import {FaInstagram,FaTwitter,FaLinkedin,} from 'react-icons/fa';
 import logo from './images/civintel_nexus_logo.png';
 import styles from './HomePage.module.css';
-import ai_predict from './images/ai_predict.jpg';
 
 export default function HomePage() {
   return (
@@ -10,6 +9,7 @@ export default function HomePage() {
       {/* Fixed Navbar */}
       <header className={styles.navbar}>
         <div className={styles.navInner}>
+        <div className={styles.navInner1}>
           <a href="/" className={styles.brand}>
             {/* Replace with your chosen logo file */}
             <img
@@ -21,7 +21,8 @@ export default function HomePage() {
               Civintel Nexus
             </span>
           </a>
-
+          </div>
+        <div className={styles.navInner2}>
           <nav className={styles.navLinks}>
             <a
               href="#home"
@@ -54,6 +55,7 @@ export default function HomePage() {
               Login
             </a>
           </nav>
+          </div>
         </div>
       </header>
 
@@ -146,13 +148,13 @@ export default function HomePage() {
               </ul>
             </div>
 
-            <div className={styles.aboutMedia}>
+            {/* <div className={styles.aboutMedia}>
               <img
                 src={ai_predict}
                 alt="Civintel Nexus Overview"
                 className={styles.aboutImg}
               />
-            </div>
+            </div> */}
           </div>
         </section>
 
@@ -237,11 +239,12 @@ export default function HomePage() {
         >
           <div className={styles.footerInner}>
             <div className={styles.footerAbout}>
-              <img
-                src={logo}
-                alt="Civintel Nexus Logo"
-                className={styles.logoImg}
-              />
+              <a href="/" className={styles.brand}>
+            <img
+              src={logo}
+              alt="Civintel Nexus Logo"
+              className={styles.logoImg2}
+            /></a>
               <p className={styles.footerDesc}>
                 Civintel Nexus — environmental
                 intelligence for healthier
@@ -318,4 +321,4 @@ export default function HomePage() {
       </main>
     </div>
   );
-}
+}  
