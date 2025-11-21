@@ -1,0 +1,61 @@
+/* =============== ORB GLOW PULSE =============== */
+.orbPulse {
+  animation: orbPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes orbPulse {
+  0% {
+    box-shadow: 0 0 18px rgba(147, 51, 234, 0.5),
+                0 0 32px rgba(147, 51, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 26px rgba(167, 83, 255, 0.7),
+                0 0 48px rgba(167, 83, 255, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 18px rgba(147, 51, 234, 0.5),
+                0 0 32px rgba(147, 51, 234, 0.3);
+  }
+}
+
+/* =============== FLOATING EFFECT =============== */
+.floatUp {
+  animation: floatUp 4.6s ease-in-out infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+/* =============== FLOATING BUTTONS POP =============== */
+.menuPop {
+  animation: menuPop 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+}
+
+@keyframes menuPop {
+  to {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+/* Slight stagger delays for each button */
+.itemDelay1 { animation-delay: 0.05s; }
+.itemDelay2 { animation-delay: 0.1s; }
+.itemDelay3 { animation-delay: 0.15s; }
+.itemDelay4 { animation-delay: 0.2s; }
+.itemDelay5 { animation-delay: 0.25s; }
+.itemDelay6 { animation-delay: 0.3s; }
+
+/* =============== MAGNETIC HOVER (ORB ONLY) =============== */
+.magnetic {
+  transition: transform 0.25s ease-out;
+}
+
+.magnetic:hover {
+  transform: scale(1.17) rotate(12deg);
+}

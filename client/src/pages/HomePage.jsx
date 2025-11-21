@@ -2,6 +2,7 @@ import React from 'react';
 import {FaInstagram,FaTwitter,FaLinkedin,} from 'react-icons/fa';
 import logo from './images/civintel_nexus_logo.png';
 import styles from './HomePage.module.css';
+import Orbmenu from '../components/Orbmenu/Orbmenu';
 
 export default function HomePage() {
   return (
@@ -319,6 +320,7 @@ export default function HomePage() {
           </div>
         </footer>
       </main>
+      <Orbmenu />
     </div>
   );
 }  
