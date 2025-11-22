@@ -299,12 +299,16 @@ export default function HomePage() {
             <div className={styles.footerLinks}>
               <a
                 href="/privacy"
+                target="_blank" 
+                rel="noopener noreferrer"
                 className={styles.footerLink}
               >
                 Privacy Policy
               </a>
               <a
                 href="/terms"
+                target="_blank" 
+                rel="noopener noreferrer"
                 className={styles.footerLink}
               >
                 Terms

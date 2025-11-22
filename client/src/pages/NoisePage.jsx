@@ -895,8 +895,8 @@ export default function NoisePage() {
             <p className="text-sm">
               Our AI model forecasts noise pollution trends using environmental data, urban activity patterns, and past readings. Future updates will bring improved accuracy for your location.
             </p>
-            <a className="inline-block mt-4 text-sm underline font-semibold" href="https://www.epa.gov/noise-pollution" target="_blank" rel="noreferrer">
-              Data source: EPA Noise Pollution Data
+            <a className="inline-block mt-4 text-sm underline font-semibold" href="/ai_predict" target="_blank" rel="noreferrer">
+              For future Prediction.
             </a>
           </div>
         </div>
