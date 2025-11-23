@@ -19,23 +19,38 @@ import AiPredictionPage from './pages/AiPredictionPage';
 import PrivacyPolicy from './pages/privacy';
 import Terms from './pages/Terms';
 import HomePageDummy from './pages/HomePageDummy';
-import ProfilePage from "./pages/ProfilePage";
-import EditProfilePhoto from "./pages/EditProfilePhoto";
-import EditProfileDetails from "./pages/EditProfileDetails";
+import ProfilePage from './pages/ProfilePage';
+import EditProfilePhoto from './pages/EditProfilePhoto';
+import EditProfileDetails from './pages/EditProfileDetails';
 
 function AppContent() {
   const location = useLocation();
 
-  const hideNavbar = location.pathname === "/";
+  const hideNavbar = [
+    '/',
+    '/home',
+    '/login',
+    '/profile/edit-details',
+    '/profile/edit-photo',
+    '/profile',
+  ];
+
+  function checknavpermission() {
+    if (hideNavbar.includes(location.pathname)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <>
-      {!hideNavbar && <Navbar />}
+      {!checknavpermission() && <Navbar />}
 
-      <div className="pt-20 px-4">
+      <div className="px-4">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/test-home" element={<HomePageDummy />} />
+          <Route path="/home" element={<HomePageDummy />} />
           <Route path="/noise" element={<NoisePage />} />
           <Route path="/air" element={<AirPage />} />
           <Route path="/weather" element={<WeatherPage />} />
@@ -46,7 +61,10 @@ function AppContent() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit-photo" element={<EditProfilePhoto />} />
-          <Route path="/profile/edit-details" element={<EditProfileDetails />} />
+          <Route
+            path="/profile/edit-details"
+            element={<EditProfileDetails />}
+          />
         </Routes>
       </div>
     </>

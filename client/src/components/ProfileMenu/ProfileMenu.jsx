@@ -1,11 +1,12 @@
 // src/components/ProfileMenu/ProfileMenu.jsx
-import React, { useEffect, useRef, useState } from "react";
-import { FiEdit, FiLogOut } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import React, { useEffect, useRef, useState } from 'react';
+import { FiEdit, FiLogOut } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import { format } from 'date-fns';
 
 export default function ProfileMenu() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const panelRef = useRef(null);
   const navigate = useNavigate();
@@ -15,11 +16,16 @@ export default function ProfileMenu() {
       if (!panelRef.current) return;
       if (!panelRef.current.contains(e.target)) setOpen(false);
     }
-    if (open) document.addEventListener("mousedown", onDoc);
-    return () => document.removeEventListener("mousedown", onDoc);
+    if (open) document.addEventListener('mousedown', onDoc);
+    return () => document.removeEventListener('mousedown', onDoc);
   }, [open]);
 
-  const avatarLetter = (user?.name?.[0] || "U").toUpperCase();
+  const avatarLetter = localStorage.getItem('firstname')[0].toUpperCase();
+  const firstname = localStorage.getItem('firstname');
+  const lastname = localStorage.getItem('lastname');
+  const email = localStorage.getItem('email');
+  const createdAt = localStorage.getItem('createdAt');
+  const date = new Date(createdAt);
 
   return (
     <div className="relative">
@@ -47,20 +53,30 @@ export default function ProfileMenu() {
       <div
         ref={panelRef}
         className={`fixed left-0 top-16 w-screen z-50 pointer-events-none transition-all duration-350 ${
-          open ? "opacity-100 translate-y-2 pointer-events-auto" : "opacity-0 -translate-y-6"
+          open
+            ? 'opacity-100 translate-y-2 pointer-events-auto'
+            : 'opacity-0 -translate-y-6'
         }`}
-        style={{ transitionTimingFunction: "cubic-bezier(.16,.9,.3,1)" }}
+        style={{ transitionTimingFunction: 'cubic-bezier(.16,.9,.3,1)' }}
       >
-        <div className="mx-auto w-[min(1200px,96%)] rounded-2xl overflow-hidden shadow-2xl
+        <div
+          className="mx-auto w-[min(1200px,96%)] rounded-2xl overflow-hidden shadow-2xl
                         bg-gradient-to-b from-neutral-900/70 to-neutral-900/60 border border-white/5
-                        backdrop-blur-2xl p-6 transform-gpu">
+                        backdrop-blur-2xl p-6 transform-gpu"
+        >
           <div className="flex items-center gap-6">
             {/* Big avatar */}
             <div className="relative">
-              <div className="w-36 h-36 rounded-full flex items-center justify-center overflow-hidden
-                              bg-gradient-to-tr from-indigo-600/30 to-sky-400/10 ring-1 ring-white/5">
+              <div
+                className="w-36 h-36 rounded-full flex items-center justify-center overflow-hidden
+                              bg-gradient-to-tr from-indigo-600/30 to-sky-400/10 ring-1 ring-white/5"
+              >
                 {user?.avatarUrl ? (
-                  <img src={user.avatarUrl} alt="avatar" className="w-full h-full object-cover" />
+                  <img
+                    src={user.avatarUrl}
+                    alt="avatar"
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-3xl font-extrabold text-white">
                     {avatarLetter}
@@ -70,7 +86,7 @@ export default function ProfileMenu() {
 
               {/* edit pencil */}
               <button
-                onClick={() => navigate("/profile/edit-photo")}
+                onClick={() => navigate('/profile/edit-photo')}
                 className="absolute -right-2 -bottom-2 bg-indigo-600/80 hover:bg-indigo-500 text-white p-2 rounded-full shadow-md"
                 title="Edit photo"
               >
@@ -83,15 +99,17 @@ export default function ProfileMenu() {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-2xl font-extrabold text-white">
-                    {user?.name || "Unnamed User"}
+                    {firstname || 'Unnamed User'} {lastname || ''}
                   </h3>
-                  <p className="text-sm text-indigo-200/90">{user?.email || "—"}</p>
+                  <p className="text-sm text-indigo-200/90">
+                    {email || 'no email'}
+                  </p>
                 </div>
 
                 <div className="text-right">
                   <div className="text-sm text-indigo-200/60">Joined</div>
                   <div className="text-sm font-medium text-indigo-100">
-                    {user?.joinedDate || "—"}
+                    {format(date, 'MMMM do, yyyy') || '-'}
                   </div>
                 </div>
               </div>
@@ -99,32 +117,38 @@ export default function ProfileMenu() {
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="p-3 rounded-lg bg-white/3 border border-white/5">
                   <div className="text-xs text-indigo-200/60">Phone</div>
-                  <div className="font-medium text-white">{user?.phone || "—"}</div>
+                  <div className="font-medium text-white">
+                    {user?.phone || '—'}
+                  </div>
                 </div>
 
                 <div className="p-3 rounded-lg bg-white/3 border border-white/5">
                   <div className="text-xs text-indigo-200/60">Location</div>
                   <div className="font-medium text-white">
-                    {user?.city ? `${user.city}, ${user.state || ""}` : "—"}
+                    {user?.city ? `${user.city}, ${user.state || ''}` : '—'}
                   </div>
                 </div>
 
                 <div className="p-3 rounded-lg bg-white/3 border border-white/5">
                   <div className="text-xs text-indigo-200/60">Occupation</div>
-                  <div className="font-medium text-white">{user?.occupation || "—"}</div>
+                  <div className="font-medium text-white">
+                    {user?.occupation || '—'}
+                  </div>
                 </div>
               </div>
 
               <div className="mt-4 flex gap-3 items-center">
                 <button
-                  onClick={() => navigate("/profile/edit-details")}
+                  onClick={() => navigate('/profile/edit-details')}
                   className="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-sky-500 text-white font-semibold shadow-md"
                 >
                   Edit Profile
                 </button>
 
                 <button
-                  onClick={() => { logout(); setTimeout(() => window.location.reload(), 50); }}
+                  onClick={() => (
+                    localStorage.setItem('isLogin', false), navigate('/')
+                  )}
                   className="px-3 py-2 rounded-lg border border-white/8 text-white flex items-center gap-2"
                   title="Logout"
                 >
@@ -136,7 +160,9 @@ export default function ProfileMenu() {
 
           {/* bio / about */}
           <div className="mt-5 border-t border-white/5 pt-4 text-indigo-100/80">
-            <p className="line-clamp-3">{user?.bio || "No bio provided yet."}</p>
+            <p className="line-clamp-3">
+              {user?.bio || 'No bio provided yet.'}
+            </p>
           </div>
         </div>
       </div>

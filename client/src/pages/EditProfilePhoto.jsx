@@ -1,13 +1,13 @@
 // src/pages/EditPhoto.jsx
-import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function EditPhoto() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
   const [preview, setPreview] = useState(() => {
-    return localStorage.getItem("user_profile_image") || null;
+    return localStorage.getItem('user_profile_image') || null;
   });
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -35,34 +35,32 @@ export default function EditPhoto() {
     reader.readAsDataURL(file);
   };
 
-  
-// ==========================
-//   SAVE IMAGE (WITH COMPRESSION)
-// ==========================
-const handleSave = async () => {
-  if (!selectedFile) {
-    alert("Please choose an image first.");
-    return;
-  }
+  // ==========================
+  //   SAVE IMAGE (WITH COMPRESSION)
+  // ==========================
+  const handleSave = async () => {
+    if (!selectedFile) {
+      alert('Please choose an image first.');
+      return;
+    }
 
-  // COMPRESS BEFORE SAVING
-  const compressed = await compressImage(selectedFile);
+    // COMPRESS BEFORE SAVING
+    const compressed = await compressImage(selectedFile);
 
-  try {
-    localStorage.setItem("user_profile_image", compressed);
-  } catch {
-    alert("Image too large even after compression!");
-    return;
-  }
-      // ================
-      // Dummy save
-      // ================
+    try {
+      localStorage.setItem('user_profile_image', compressed);
+    } catch {
+      alert('Image too large even after compression!');
+      return;
+    }
+    // ================
+    // Dummy save
+    // ================
 
-
-      // ================================
-      // BACKEND READY (uncomment later)
-      // ================================
-      /*
+    // ================================
+    // BACKEND READY (uncomment later)
+    // ================================
+    /*
       const formData = new FormData();
       formData.append("avatar", selectedFile);
 
@@ -70,46 +68,45 @@ const handleSave = async () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       */
-  navigate("/profile");
-};
+    navigate('/profile');
+  };
 
   // ==========================
-//   COMPRESS IMAGE FUNCTION
-// ==========================
-const compressImage = (file) =>
-  new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const MAX = 480; // good balance
+  //   COMPRESS IMAGE FUNCTION
+  // ==========================
+  const compressImage = (file) =>
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX = 480; // good balance
 
-        let { width, height } = img;
+          let { width, height } = img;
 
-        if (width > MAX) {
-          height = (MAX / width) * height;
-          width = MAX;
-        }
+          if (width > MAX) {
+            height = (MAX / width) * height;
+            width = MAX;
+          }
 
-        canvas.width = width;
-        canvas.height = height;
+          canvas.width = width;
+          canvas.height = height;
 
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, height);
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
 
-        const compressed = canvas.toDataURL("image/jpeg", 0.7);
-        resolve(compressed);
+          const compressed = canvas.toDataURL('image/jpeg', 0.7);
+          resolve(compressed);
+        };
+        img.src = event.target.result;
       };
-      img.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
+      reader.readAsDataURL(file);
+    });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-900 p-8 flex justify-center">
       <div className="w-[min(600px,95%)] bg-neutral-900/60 p-6 rounded-2xl border border-white/5 shadow-2xl backdrop-blur-xl relative overflow-hidden">
-
         {/* ======================
             FUTURISTIC BG LAYERS
         ======================= */}
@@ -168,7 +165,7 @@ const compressImage = (file) =>
         ======================= */}
         <div className="flex justify-end gap-3 mt-6 relative z-10">
           <button
-            onClick={() => navigate("/profile")}
+            onClick={() => navigate('/profile')}
             className="px-4 py-2 rounded-lg border border-white/10 text-white hover:bg-white/10 transition-all"
           >
             Cancel

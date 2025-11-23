@@ -190,6 +190,32 @@ app.get('/geocode/:lat/:lon', async (req, res) => {
   }
 });
 
+app.put('/edit', async (req, res) => {
+  try {
+    const { name, bio, dob, city, phone, occupation, country, state, id } =
+      req.body; // fields sent from client
+
+    console.log(req.body);
+    // Update user
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { name, bio, dob, city, phone, occupation, country, state },
+      { new: true } // return updated doc
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({
+      message: 'User updated successfully',
+      user: updatedUser,
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

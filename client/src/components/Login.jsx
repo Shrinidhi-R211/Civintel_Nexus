@@ -11,9 +11,9 @@ import { TbLockOpen } from 'react-icons/tb';
 import ModalSignup from '../modals/ModalSignup.jsx';
 
 export default function Login() {
-const { isLogin, setisLogin, setdata } = useContext(LoginContext);
+  const { isLogin, setisLogin, setdata } = useContext(LoginContext);
 
-const [info, setinfo] = useState({
+  const [info, setinfo] = useState({
     logo: '',
     message: '',
     moreinfo: '',
@@ -38,23 +38,20 @@ const [info, setinfo] = useState({
     e.preventDefault();
     setmodalopen(true);
     try {
-      const res = await fetch(
-        'http://localhost:5000/login',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(logindata),
-        }
-      );
+      const res = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(logindata),
+      });
 
       const data = await res.json();
       setmodalopen(false);
-      setmodal(true)
+      setmodal(true);
 
       if (res.status == 200) {
-         setisLogin(true);
+        setisLogin(true);
         setdata(data);
         setinfo({
           logo: (
@@ -62,10 +59,10 @@ const [info, setinfo] = useState({
           ),
           message: 'Login successful ✅',
           moreinfo: 'You unlocked some features',
-          path: '#home',
+          path: 'home',
           content: 'Go to Dashbord',
         });
-        return
+        return;
       } else if (res.status == 400) {
         setinfo({
           logo: (
@@ -76,9 +73,8 @@ const [info, setinfo] = useState({
           path: 'login',
           content: 'Try again',
         });
-
       } else if (res.status == 404) {
-         setinfo({
+        setinfo({
           logo: (
             <MdBlockFlipped className="text-6xl font-extrabold mb-5 text-red-500 text-opacity-70 self-center p-2 rounded-lg bg-red-100" />
           ),
@@ -87,7 +83,6 @@ const [info, setinfo] = useState({
           path: 'signup',
           content: 'Go to Signup',
         });
-
       } else {
         setinfo({
           logo: (
@@ -99,7 +94,6 @@ const [info, setinfo] = useState({
           path: 'login',
           content: 'Try again',
         });
-
       }
     } catch (err) {
       console.log('Cant reach to a server', err);
@@ -191,7 +185,7 @@ const [info, setinfo] = useState({
             />
 
             <button
-            type='button'
+              type="button"
               onClick={handlelogin}
               className="h-10 mt-6 bg-blue-500 rounded-md"
             >
@@ -207,24 +201,22 @@ const [info, setinfo] = useState({
           </form>
         </div>
       </div>
-       <ModalSignup isOpen={modal} onClose={() => setmodal(false)}>
-          <div className="flex flex-col justify-center p-5">
-            {info.logo}
-            <h1 className="text-2xl text-center font-semibold">
-              {info.message}
-            </h1>
-            <p className="text-gray-700 text-base text-center mt-2">
-              {info.moreinfo}
-            </p>
-            <Link
-              to={`/${info.path}`}
-              onClick={() => setmodal(false)}
-              className="px-10 py-2 rounded-lg mt-8 bg-black bg-opacity-80 text-white text-center mx-auto"
-            >
-              {info.content}
-            </Link>
-          </div>
-        </ModalSignup>
+      <ModalSignup isOpen={modal} onClose={() => setmodal(false)}>
+        <div className="flex flex-col justify-center p-5">
+          {info.logo}
+          <h1 className="text-2xl text-center font-semibold">{info.message}</h1>
+          <p className="text-gray-700 text-base text-center mt-2">
+            {info.moreinfo}
+          </p>
+          <Link
+            to={`/${info.path}`}
+            onClick={() => setmodal(false)}
+            className="px-10 py-2 rounded-lg mt-8 bg-black bg-opacity-80 text-white text-center mx-auto"
+          >
+            {info.content}
+          </Link>
+        </div>
+      </ModalSignup>
       <ModalLoading isOpen={ismodalopen}> </ModalLoading>
     </div>
   );

@@ -1,8 +1,9 @@
 import React from 'react';
-import {FaInstagram,FaTwitter,FaLinkedin,} from 'react-icons/fa';
+import { FaInstagram, FaTwitter, FaLinkedin } from 'react-icons/fa';
 import logo from './images/civintel_nexus_logo.png';
 import styles from './HomePage.module.css';
 import Orbmenu from '../components/Orbmenu/Orbmenu';
+import { Link } from 'react-router-dom';
 
 export default function HomePage() {
   return (
@@ -10,52 +11,35 @@ export default function HomePage() {
       {/* Fixed Navbar */}
       <header className={styles.navbar}>
         <div className={styles.navInner}>
-        <div className={styles.navInner1}>
-          <a href="/" className={styles.brand}>
-            {/* Replace with your chosen logo file */}
-            <img
-              src={logo}
-              alt="Civintel Nexus Logo"
-              className={styles.logoImg}
-            />
-            <span className={styles.logoText}>
-              Civintel Nexus
-            </span>
-          </a>
+          <div className={styles.navInner1}>
+            <a href="/" className={styles.brand}>
+              {/* Replace with your chosen logo file */}
+              <img
+                src={logo}
+                alt="Civintel Nexus Logo"
+                className={styles.logoImg}
+              />
+              <span className={styles.logoText}>Civintel Nexus</span>
+            </a>
           </div>
-        <div className={styles.navInner2}>
-          <nav className={styles.navLinks}>
-            <a
-              href="#home"
-              className={styles.navLink}
-            >
-              Home
-            </a>
-            <a
-              href="#about"
-              className={styles.navLink}
-            >
-              About
-            </a>
-            <a
-              href="#services"
-              className={styles.navLink}
-            >
-              Services
-            </a>
-            <a
-              href="#contact"
-              className={styles.navLink}
-            >
-              Contact
-            </a>
-            <a
-              href="login"
-              className={styles.navLink}
-            >
-              Login
-            </a>
-          </nav>
+          <div className={styles.navInner2}>
+            <nav className={styles.navLinks}>
+              <a href="#home" className={styles.navLink}>
+                Home
+              </a>
+              <a href="#about" className={styles.navLink}>
+                About
+              </a>
+              <a href="#services" className={styles.navLink}>
+                Services
+              </a>
+              <a href="#contact" className={styles.navLink}>
+                Contact
+              </a>
+              <a href="login" className={styles.navLink}>
+                Login
+              </a>
+            </nav>
           </div>
         </div>
       </header>
@@ -63,32 +47,19 @@ export default function HomePage() {
       {/* Main content with offset to account for fixed navbar */}
       <main className={styles.main}>
         {/* HERO */}
-        <section
-          id="home"
-          className={styles.hero}
-        >
+        <section id="home" className={styles.hero}>
           <div className={styles.heroOverlay} />
           <div className={styles.heroInner}>
-            <h1 className={styles.heroTitle}>
-              Civintel Nexus
-            </h1>
+            <h1 className={styles.heroTitle}>Civintel Nexus</h1>
             <p className={styles.heroSubtitle}>
-              Professional environmental
-              intelligence — air, noise, weather,
-              and AI-driven insights for better
-              decisions.
+              Professional environmental intelligence — air, noise, weather, and
+              AI-driven insights for better decisions.
             </p>
             <div className={styles.heroCtas}>
-              <a
-                href="#about"
-                className={styles.primaryBtn}
-              >
+              <a href="#about" className={styles.primaryBtn}>
                 Explore Project
               </a>
-              <a
-                href="#services"
-                className={styles.ghostBtn}
-              >
+              <a href="#services" className={styles.ghostBtn}>
                 Our Services
               </a>
             </div>
@@ -98,53 +69,30 @@ export default function HomePage() {
         <hr className={styles.separator} />
 
         {/* ABOUT */}
-        <section
-          id="about"
-          className={styles.aboutSection}
-        >
+        <section id="about" className={styles.aboutSection}>
           <div className={styles.aboutInner}>
             <div className={styles.aboutText}>
-              <h2 className={styles.sectionTitle}>
-                About the Project
-              </h2>
-              <ul
-                className={
-                  styles.futuristicBullets
-                }
-              >
+              <h2 className={styles.sectionTitle}>About the Project</h2>
+              <ul className={styles.futuristicBullets}>
                 <li>
-                  <span
-                    className={styles.bulletMark}
-                  />{' '}
-                  Approximate Real-time air &
-                  noise monitoring
+                  <span className={styles.bulletMark} /> Approximate Real-time
+                  air & noise monitoring
                 </li>
                 <li>
-                  <span
-                    className={styles.bulletMark}
-                  />{' '}
-                  Approximate weather insights for
-                  any location
+                  <span className={styles.bulletMark} /> Approximate weather
+                  insights for any location
                 </li>
                 <li>
-                  <span
-                    className={styles.bulletMark}
-                  />{' '}
-                  Data-driven environmental
-                  analysis
+                  <span className={styles.bulletMark} /> Data-driven
+                  environmental analysis
                 </li>
                 <li>
-                  <span
-                    className={styles.bulletMark}
-                  />{' '}
-                  AI predictions (coming soon)
+                  <span className={styles.bulletMark} /> AI predictions (coming
+                  soon)
                 </li>
                 <li>
-                  <span
-                    className={styles.bulletMark}
-                  />{' '}
-                  Built for research & civic
-                  awareness
+                  <span className={styles.bulletMark} /> Built for research &
+                  civic awareness
                 </li>
               </ul>
             </div>
@@ -162,93 +110,74 @@ export default function HomePage() {
         <hr className={styles.separator} />
 
         {/* SERVICES */}
-        <section
-          id="services"
-          className={styles.servicesSection}
-        >
+        <section id="services" className={styles.servicesSection}>
           <div className={styles.servicesHead}>
-            <h2 className={styles.sectionTitle}>
-              Our Services{' '}
-            </h2>
+            <h2 className={styles.sectionTitle}>Our Services </h2>
             <p className={styles.sectionSubtle}>
-              Click a card to visit the dedicated
-              tool page.
+              Click a card to visit the dedicated tool page.
             </p>
           </div>
 
           {/* Grid for larger screens / carousel for small */}
           <div className={styles.cardsWrapper}>
-            <a
-              href="/noise"
+            <Link
+              to={`/login`}
               className={`${styles.card} ${styles.cardNoise}`}
               aria-label="Noise Monitoring"
             >
               <div className={styles.cardContent}>
-                <div className={styles.cardLabel}>
-                  Noise Monitoring
-                </div>
+                <div className={styles.cardLabel}>Noise Monitoring</div>
               </div>
-            </a>
+            </Link>
 
-            <a
-              href="/air"
+            <Link
+              to={`/login`}
               className={`${styles.card} ${styles.cardAir}`}
               aria-label="Air Monitoring"
             >
               <div className={styles.cardContent}>
-                <div className={styles.cardLabel}>
-                  Air Monitoring
-                </div>
+                <div className={styles.cardLabel}>Air Monitoring</div>
               </div>
-            </a>
+            </Link>
 
-            <a
-              href="/weather"
+            <Link
+              to={`/login`}
               className={`${styles.card} ${styles.cardWeather}`}
               aria-label="Weather Details"
             >
               <div className={styles.cardContent}>
-                <div className={styles.cardLabel}>
-                  Weather Details
-                </div>
+                <div className={styles.cardLabel}>Weather Details</div>
               </div>
-            </a>
+            </Link>
 
-            <a
-              href="/ai_predict"
+            <Link
+              to={`/login`}
               className={`${styles.card} ${styles.cardAI}`}
               aria-label="AI Prediction"
             >
               <div className={styles.cardContent}>
-                <div className={styles.cardTag}>
-                  Coming Soon
-                </div>
-                <div className={styles.cardLabel}>
-                  AI Prediction
-                </div>
+                <div className={styles.cardTag}>Coming Soon</div>
+                <div className={styles.cardLabel}>AI Prediction</div>
               </div>
-            </a>
+            </Link>
           </div>
         </section>
 
         <hr className={styles.separator} />
 
         {/* CONTACT + Footer */}
-        <footer
-          id="contact"
-          className={styles.footer}
-        >
+        <footer id="contact" className={styles.footer}>
           <div className={styles.footerInner}>
             <div className={styles.footerAbout}>
               <a href="/" className={styles.brand}>
-            <img
-              src={logo}
-              alt="Civintel Nexus Logo"
-              className={styles.logoImg2}
-            /></a>
+                <img
+                  src={logo}
+                  alt="Civintel Nexus Logo"
+                  className={styles.logoImg2}
+                />
+              </a>
               <p className={styles.footerDesc}>
-                Civintel Nexus — environmental
-                intelligence for healthier
+                Civintel Nexus — environmental intelligence for healthier
                 communities.
               </p>
             </div>
@@ -256,12 +185,10 @@ export default function HomePage() {
             <div className={styles.footerContact}>
               <h3>Contact Us</h3>
               <p className={styles.contactLine}>
-                <strong>Email:</strong>{' '}
-                contact@civintelnexus.com
+                <strong>Email:</strong> contact@civintelnexus.com
               </p>
               <p className={styles.contactLine}>
-                <strong>Phone:</strong> +91 87489
-                24512
+                <strong>Phone:</strong> +91 87489 24512
               </p>
               <div className={styles.socials}>
                 <a
@@ -299,7 +226,7 @@ export default function HomePage() {
             <div className={styles.footerLinks}>
               <a
                 href="/privacy"
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
                 className={styles.footerLink}
               >
@@ -307,7 +234,7 @@ export default function HomePage() {
               </a>
               <a
                 href="/terms"
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
                 className={styles.footerLink}
               >
@@ -318,8 +245,7 @@ export default function HomePage() {
 
           <div className={styles.copyRow}>
             <span>
-              © {new Date().getFullYear()}{' '}
-              Civintel Nexus. All rights reserved.
+              © {new Date().getFullYear()} Civintel Nexus. All rights reserved.
             </span>
           </div>
         </footer>
@@ -327,4 +253,4 @@ export default function HomePage() {
       <Orbmenu />
     </div>
   );
-}  
+}

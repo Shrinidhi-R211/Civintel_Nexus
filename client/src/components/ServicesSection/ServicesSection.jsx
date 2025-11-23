@@ -1,22 +1,22 @@
 // src/components/ServicesSection/ServicesSection.jsx
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 // Reuse the existing HomePage CSS module so look/feel stays identical
-import homeStyles from "../../pages/HomePage.module.css";
+import homeStyles from '../../pages/HomePage.module.css';
 
 /**
  * ServicesSection
  * - isLoggedIn: boolean
  * - classNameOverride: optional string to append to wrapper
  */
-export default function ServicesSection({ isLoggedIn }) {
+export default function ServicesSection({ isLogin }) {
   const navigate = useNavigate();
 
   function handleCardClick(e, targetPath) {
     e.preventDefault();
-    if (!isLoggedIn) {
+    if (!isLogin) {
       // redirect to login until backend is ready
-      navigate("/login");
+      navigate('/login');
       return;
     }
     navigate(targetPath);
@@ -34,7 +34,7 @@ export default function ServicesSection({ isLoggedIn }) {
       <div className={homeStyles.cardsWrapper}>
         <a
           href="/noise"
-          onClick={(e) => handleCardClick(e, "/noise")}
+          onClick={(e) => handleCardClick(e, '/noise')}
           className={`${homeStyles.card} ${homeStyles.cardNoise}`}
           aria-label="Noise Monitoring"
         >
@@ -45,7 +45,7 @@ export default function ServicesSection({ isLoggedIn }) {
 
         <a
           href="/air"
-          onClick={(e) => handleCardClick(e, "/air")}
+          onClick={(e) => handleCardClick(e, '/air')}
           className={`${homeStyles.card} ${homeStyles.cardAir}`}
           aria-label="Air Monitoring"
         >
@@ -56,7 +56,7 @@ export default function ServicesSection({ isLoggedIn }) {
 
         <a
           href="/weather"
-          onClick={(e) => handleCardClick(e, "/weather")}
+          onClick={(e) => handleCardClick(e, '/weather')}
           className={`${homeStyles.card} ${homeStyles.cardWeather}`}
           aria-label="Weather Details"
         >
@@ -67,7 +67,7 @@ export default function ServicesSection({ isLoggedIn }) {
 
         <a
           href="/ai_predict"
-          onClick={(e) => handleCardClick(e, "/ai_predict")}
+          onClick={(e) => handleCardClick(e, '/ai_predict')}
           className={`${homeStyles.card} ${homeStyles.cardAI}`}
           aria-label="AI Prediction"
         >
