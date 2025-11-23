@@ -2,9 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const { default: User } = require('./models/user.model.js');
+const User = require('./models/user.model.js');
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 app.use(cors());
 
 // Middleware
@@ -20,21 +20,24 @@ const airDataSchema = new mongoose.Schema({
   category: String,
   pm25: Number,
   pm10: Number,
-  timestamp: { type: Date, default: Date.now }
+  timestamp: { type: Date, default: Date.now },
 });
-const AirData = mongoose.model("AirData", airDataSchema);
+const AirData = mongoose.model('AirData', airDataSchema);
 
 // Connect to MongoDB Atlas
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log('Hey, It is successfully connected to MongoDB Atlas!'))
-.catch((err) => console.error('MongoDB connection error:', err));
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() =>
+    console.log('Hey, It is successfully connected to MongoDB Atlas!')
+  )
+  .catch((err) => console.error('MongoDB connection error:', err));
 
 // Test route
 app.get('/', (req, res) => {
   res.send('Hello from the Civintel Nexus server!');
 });
 // POST route to save live AQI or searched location data
-app.post("/api/air-data", async (req, res) => {
+app.post('/api/air-data', async (req, res) => {
   try {
     const data = new AirData(req.body);
     const saved = await data.save();
@@ -45,7 +48,7 @@ app.post("/api/air-data", async (req, res) => {
 });
 
 // GET route to fetch recent AQI data for chart/trends
-app.get("/api/air-data/trend", async (req, res) => {
+app.get('/api/air-data/trend', async (req, res) => {
   const { lat, lon } = req.query;
   try {
     const data = await AirData.find({
@@ -60,7 +63,7 @@ app.get("/api/air-data/trend", async (req, res) => {
 });
 
 // Optional: GET route to fetch latest entries for debug
-app.get("/api/air-data/latest", async (req, res) => {
+app.get('/api/air-data/latest', async (req, res) => {
   try {
     const data = await AirData.find().sort({ timestamp: -1 }).limit(10);
     res.json(data);
@@ -71,8 +74,10 @@ app.get("/api/air-data/latest", async (req, res) => {
 // User router
 app.post('/User', async (req, res) => {
   const { firstname, lastname, email, password } = req.body;
+
   try {
     const existingUser = await User.findOne({ email });
+
     if (existingUser) {
       return res.status(400).send({ message: 'Email already registered' });
     }
@@ -122,6 +127,68 @@ app.get('/logout', (req, res) => {
   res.json({ message: 'Logged out' });
 });
 
+app.get('/search-location/:text', async (req, res) => {
+  const { text } = req.params;
+
+  if (!text) {
+    return res.status(400).json({ message: 'Search text is required' });
+  }
+
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
+    text
+  )}`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent':
+          'CivintelNexus/1.0 (https://github.com/Shrinidhi-R211/Civintel_Nexus)',
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.length === 0) {
+      return res.status(404).json({ message: 'No location found' });
+    }
+
+    // Extract needed info
+    const location = {
+      lat: data[0].lat,
+      lon: data[0].lon,
+      displayName: data[0].display_name,
+    };
+
+    res.json(location);
+  } catch (error) {
+    console.error('Search error:', error);
+    res.status(500).json({ message: 'Server error while searching location' });
+  }
+});
+
+app.get('/geocode/:lat/:lon', async (req, res) => {
+  const { lat, lon } = req.params;
+
+  const latitude = Number(lat);
+  const longitude = Number(lon);
+
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=en`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent':
+          'CivintelNexus/1.0 (https://github.com/Shrinidhi-R211/Civintel_Nexus)',
+      },
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching address:', error);
+    res.status(500).json({ error: 'Failed to fetch address' });
+  }
+});
 
 // Start server
 app.listen(PORT, () => {
