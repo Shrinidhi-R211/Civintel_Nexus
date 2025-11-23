@@ -43,3 +43,17 @@ html {
   background-size: 200% 200%;
   animation: gradientFlow 3s linear infinite;
 }
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.35s ease-out;
+}
