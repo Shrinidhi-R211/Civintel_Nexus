@@ -32,7 +32,6 @@ function AppContent() {
     '/login',
     '/profile/edit-details',
     '/profile/edit-photo',
-    '/profile',
   ];
 
   function checknavpermission() {

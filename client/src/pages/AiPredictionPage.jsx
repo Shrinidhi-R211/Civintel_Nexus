@@ -21,6 +21,7 @@ import { Line, Bar, Radar } from "react-chartjs-2";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import AIResponseModal from "../modals/AIResponseModal";
 
 /* ---------- ChartJS register ---------- */
 ChartJS.register(
@@ -199,15 +200,16 @@ export default function AiPredictionPage() {
   const [noiseHistory, setNoiseHistory] = useState([]); // {value, timestamp: ISO}
   const [airHistory, setAirHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [binfo,setbinfo]=useState('')
 
   const [activeNoiseChart, setActiveNoiseChart] = useState("line");
   const [activeAirChart, setActiveAirChart] = useState("line");
 
   const [noisePred, setNoisePred] = useState([]);
   const [airPred, setAirPred] = useState([]);
-
-  const [noiseSummary, setNoiseSummary] = useState({});
-  const [airSummary, setAirSummary] = useState({});
+const [isModalOpen, setIsModalOpen] = useState(false);
+  const [noiseSummary, setNoiseSummary] = useState({id:'noise'});
+  const [airSummary, setAirSummary] = useState({id:'air'});
 
   const [mapOpen, setMapOpen] = useState(false);
   const [mapSearch, setMapSearch] = useState("");
@@ -323,7 +325,7 @@ export default function AiPredictionPage() {
       setNoisePred(preds);
       setNoiseSummary(makeSummary(values, preds));
     }
-  }, [noiseHistory]);
+  }, []);
 
   useEffect(() => {
     if (airHistory.length) {
@@ -333,7 +335,7 @@ export default function AiPredictionPage() {
       setAirPred(preds);
       setAirSummary(makeSummary(values, preds));
     }
-  }, [airHistory]);
+  }, []);
 
   function makeSummary(values, preds) {
     const latest = values[values.length - 1];
@@ -482,6 +484,34 @@ export default function AiPredictionPage() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const payload = buildChartPayload(history, preds, activeChart, title, color);
 
+    const sendinfo = async (info, title) => {
+  console.log(info, title);
+
+  const url =
+    title === "Noise Prediction (dB)"
+      ? "http://localhost:5000/noiseanalyzer"
+      : "http://localhost:5000/airanalyzer";
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info),
+    });
+
+    const data = await res.json(); // FIXED ✔✔✔
+    console.log("Server Response:", data);
+    setbinfo(data.text);
+  } catch (err) {
+    console.error("Error sending info:", err);
+  }
+};
+
+    
+
+
     return (
       <motion.div
         layout
@@ -553,11 +583,9 @@ export default function AiPredictionPage() {
             </button>
             <button
               className="px-4 py-2 rounded-full border border-slate-200 bg-white font-semibold hover:bg-slate-50"
-              onClick={() => {
-                fetchHistories(loc.lat, loc.lon);
-              }}
+              onClick={()=>(sendinfo(summary,title),setIsModalOpen(true))}
             >
-              Refresh
+              AI analyzer
             </button>
           </div>
         </div>
@@ -565,9 +593,11 @@ export default function AiPredictionPage() {
     );
   }
 
+  
+
   /* ----------------- main render ----------------- */
   return (
-    <div className="min-h-screen bg-[linear-gradient(135deg,#f5f7fb,_#eef2ff)] p-6 md:p-10 font-sans text-slate-900">
+    <div className="min-h-screen mt-20 bg-[linear-gradient(135deg,#f5f7fb,_#eef2ff)] p-6 md:p-10 font-sans text-slate-900">
       <header className="max-w-6xl mx-auto text-center mb-8">
         <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="text-4xl md:text-5xl font-extrabold">
           AI Predictions — Noise & Air
@@ -601,7 +631,7 @@ export default function AiPredictionPage() {
         />
       </main>
 
-      <section className="max-w-6xl mx-auto mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section className="max-w-6xl mx-auto mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         <div className="bg-white/70 p-6 rounded-2xl shadow">
           <h3 className="text-lg font-bold mb-4">Advantages</h3>
           <ul className="space-y-3 text-slate-600">
@@ -747,6 +777,10 @@ export default function AiPredictionPage() {
     © {new Date().getFullYear()} Civintel Nexus. All rights reserved.
   </div>
 </footer>
+
+   <AIResponseModal open={isModalOpen} onClose={()=>setIsModalOpen(false)} binfo={binfo}>
+
+          </AIResponseModal>
 
       {/* Map Modal */}
       {mapOpen && (

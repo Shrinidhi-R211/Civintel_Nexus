@@ -615,14 +615,26 @@ export default function NoisePage() {
     };
 
     // Replace the following with your API call to save into "automatic" DB
-    try {
-      console.log("Auto payload to send:", payload);
-      // await fetch('/api/noise/auto', {method: 'POST', body: JSON.stringify(payload)})
-      alert("Auto reading submitted (demo). Check console for payload.");
-    } catch (err) {
-      console.error(err);
-      alert("Submission failed.");
-    }
+   try {
+  console.log("Auto payload to send:", payload);
+
+  const res = await fetch("http://localhost:5000/api/noise", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await res.json();
+  console.log("Response from server:", data);
+
+  alert("Data is saved in the database");
+} catch (err) {
+  console.error(err);
+  alert("Submission failed.");
+}
+
   };
 
   // Manual submission goes to a separate manual DB (Option A) — so we don't corrupt auto dataset

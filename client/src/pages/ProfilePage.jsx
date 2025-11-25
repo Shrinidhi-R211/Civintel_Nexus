@@ -19,7 +19,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-900 p-8">
-      <div className="mx-auto w-[min(1100px,96%)]">
+      <div className="mx-auto my-10 w-[min(1100px,96%)]">
         <div className="rounded-2xl p-6 bg-gradient-to-b from-transparent to-neutral-900/60 border border-white/5 backdrop-blur-lg shadow-2xl">
           
           <div className="flex gap-6 items-start">
